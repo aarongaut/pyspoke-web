@@ -1,0 +1,2 @@
+export PYTHONPATH=$RL_ROOT/src:$PYTHONPATH
+export PATH=$RL_ROOT/dev-bin:$PATH

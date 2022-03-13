@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>spoke-webproxy browser demo</title>
+  </head>
+  <body>
+    <ul id="messages"></ul>
+    <script>
+      messages = document.querySelector("#messages");
+      const websocket = new WebSocket("ws://localhost:8080");
+      websocket.onmessage = ({ data }) => {
+        data.text().then(content => {
+          const message = document.createElement("li");
+          message.innerText = content;
+          messages.appendChild(message);
+        });
+      };
+      msgobj = {
+        head: { channel: "-control/subscribe" },
+        body: "**",
+      };
+      submsg = `${JSON.stringify(msgobj)}\0`;
+      websocket.onopen = () => {
+        websocket.send(new Blob([submsg]));
+      };
+    </script>
+  </body>
+</html>

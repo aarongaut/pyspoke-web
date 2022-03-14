@@ -7,6 +7,7 @@ from spoke.conn import abc
 
 DEFAULT_WEBPORT = 7182
 
+
 class Connection(abc.AbstractConnection):
     def __init__(self, websocket, close_event=None):
         self.__close_event = close_event
@@ -52,7 +53,9 @@ class Connection(abc.AbstractConnection):
 class Client(abc.AbstractClient):
     def __init__(self, host=None, port=None, cert=None):
         host = host or os.getenv("SPOKEWEBHOST", os.getenv("SPOKEHOST", "localhost"))
-        port = port or int(os.getenv("SPOKEWEBPORT", os.getenv("SPOKEPORT", DEFAULT_WEBPORT)))
+        port = port or int(
+            os.getenv("SPOKEWEBPORT", os.getenv("SPOKEPORT", DEFAULT_WEBPORT))
+        )
         protocol = "wss" if cert else "ws"
         self._uri = f"{protocol}://{host}:{port}"
         self._connection = None
@@ -106,8 +109,12 @@ class Client(abc.AbstractClient):
 
 class Server(abc.AbstractServer):
     def __init__(self, host=None, port=None, cert=None):
-        self.__host = host or os.getenv("SPOKEWEBHOST", os.getenv("SPOKEHOST", "0.0.0.0"))
-        self.__port = port or int(os.getenv("SPOKEWEBPORT", os.getenv("SPOKEPORT", DEFAULT_WEBPORT)))
+        self.__host = host or os.getenv(
+            "SPOKEWEBHOST", os.getenv("SPOKEHOST", "0.0.0.0")
+        )
+        self.__port = port or int(
+            os.getenv("SPOKEWEBPORT", os.getenv("SPOKEPORT", DEFAULT_WEBPORT))
+        )
         self.__cert = cert
         self.__client_queue = None
         self.__server = None
@@ -133,7 +140,9 @@ class Server(abc.AbstractServer):
                     _listen, self.__host, self.__port, ssl=ssl_context
                 )
             else:
-                self.__server = await websockets.serve(_listen, self.__host, self.__port)
+                self.__server = await websockets.serve(
+                    _listen, self.__host, self.__port
+                )
 
         return await self.__client_queue.get()
 
@@ -155,4 +164,3 @@ class Server(abc.AbstractServer):
 
     async def __anext__(self) -> Connection:
         return await self.accept()
-

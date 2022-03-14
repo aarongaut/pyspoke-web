@@ -22,7 +22,11 @@ def webproxy():
         args.allowed_channels,
         conn_client_opts={"port": args.private_port, "host": args.private_host},
         conn_server_class=spoke_web.conn.Server,
-        conn_server_opts={"port": args.public_port, "host": args.public_host, "cert": args.cert},
+        conn_server_opts={
+            "port": args.public_port,
+            "host": args.public_host,
+            "cert": args.cert,
+        },
     )
 
     try:

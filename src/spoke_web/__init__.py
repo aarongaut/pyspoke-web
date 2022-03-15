@@ -1,2 +1,3 @@
+__version__ = "0.1.2"
+
 from . import conn
-from .version import __version__

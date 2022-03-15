@@ -7,4 +7,5 @@ build-backend = "setuptools.build_meta"
 [project]
 dependencies = [
     "websockets>=10"
+    "pyspoke>=1.1"
 ]
